@@ -74,34 +74,31 @@ class LinkedList2:
         return s
 
     def insert(self, afterNode, newNode): #метод вставки узла после заданного узла
-        if afterNode == None and self.head == None and self.tail == None:
-            if type(newNode) == Node:
-                LinkedList2.add_in_tail(self, newNode) # проверка на пустой список
+        if afterNode is None:
             if type(newNode) == int:
-                self.tail = self.head = Node(newNode)
-            return
-        node = self.head
-        while True:
-            if afterNode == None: #добавление в начало
-                LinkedList2.add_in_head(self, newNode)
-                return
-            if type(newNode) == Node:
-                LinkedList2.add_in_tail(self, newNode)
-                return
-            if type(newNode) == int and type(afterNode) == Node:#(int, Node)
+                newNode = Node(newNode)
+            if self.head == self.tail == None: #пустой
+                self.add_in_head(newNode)
+            else:
+                self.add_in_tail(newNode)
+        else:
+            if type(newNode) == int:
+                newNode = Node(newNode)
+            if type(afterNode) == int:
+                afterNode = Node(afterNode)
+            node = self.head
+            while True:
                 if node.value == afterNode.value:
-                    node.next = Node(newNode, )
-                    if node.next.next == None:
-                        self.tail = node.next
+                    newNode.next = node.next
+                    node.next = newNode
+                    newNode.prev = node
+                    if newNode.next is None:
+                        self.tail = newNode
+                    else:
+                        node.next.prev = newNode
                     break
-                else: node = node.next
-            if type(newNode) == int and type(afterNode) == int:#(int, int)
-                if node.value == afterNode:
-                    node.next = Node(newNode, node.next)
-                    if node.next.next == None:
-                        self.tail = node.next
-                    break
-                else: node = node.next
+                else:
+                    node = node.next
 
     def add_in_head(self, newNode):
         if self.head is None:
